@@ -1,0 +1,18 @@
+.page {
+    color: rgba(255, 255, 255, .55) !important;
+}
+
+.page:hover {
+    background-color: #E9ECEF;
+    color: #212529 !important;
+}
+
+.page:active {
+    background-color: black;
+    color: #E9ECEF !important;
+}
+
+.active {
+    background-color: #E9ECEF;
+    color: #212529 !important;
+}

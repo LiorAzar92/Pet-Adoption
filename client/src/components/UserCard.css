@@ -1,0 +1,10 @@
+.user-card {
+    cursor: pointer;
+}
+
+.user-card:hover {
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: none !important;
+}
