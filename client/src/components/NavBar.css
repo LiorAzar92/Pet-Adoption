@@ -16,3 +16,13 @@
     background-color: #E9ECEF;
     color: #212529 !important;
 }
+
+@media screen and (max-width: 1200px) {
+    .home-logo {
+        display: none;
+    }
+
+    .page {
+        font-size: 11px;
+    }
+}

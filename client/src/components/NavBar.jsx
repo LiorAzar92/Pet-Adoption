@@ -33,7 +33,8 @@ const NavBar = () => {
         <div>
             <Navbar bg="dark" variant='dark' expand="lg" fixed='top'>
                 <Container>
-                    <Image src='https://res.cloudinary.com/liorcloud/image/upload/v1651994071/icnix1c6l12tkmzyeie9.png' className='me-2' style={{ height: '40px' }} />
+                    <Image src='https://res.cloudinary.com/liorcloud/image/upload/v1651994071/icnix1c6l12tkmzyeie9.png'
+                        className='me-2' style={{ height: '40px' }} />
                     <Navbar.Brand className='page rounded fw-light pe-2 px-2' to='/' as={NavLink}>
                         Home
                     </Navbar.Brand>
@@ -45,10 +46,8 @@ const NavBar = () => {
                             <Navbar.Brand to='/pets' className='page rounded fw-light pe-2 px-2' as={NavLink}>Pets</Navbar.Brand>
                         </>
                     }
-
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav"
-                        className='justify-content-end'>
+                    <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
                         <Nav className="d-flex">
                             {
                                 isAuth && activeUser.isAdmin &&

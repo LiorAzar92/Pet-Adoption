@@ -1,0 +1,27 @@
+@media screen and (max-width: 1200px) {
+    .home-logo {
+        display: none;
+    }
+
+    .welcome {
+        font-size: 30px;
+        margin: none !important;
+        padding: none !important;
+    }
+
+    .welcome::after {
+        content: ' Pet Center';
+    }
+
+    .let {
+        font-size: 20px;
+    }
+
+    .pets-page {
+        font-size: 20px;
+    }
+
+    .click-here {
+        font-size: 17px !important;
+    }
+}
