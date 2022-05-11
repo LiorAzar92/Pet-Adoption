@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Form, Modal, Button, Row, Col, Alert } from 'react-bootstrap'
 import AuthContext from '../contexts/AuthContext'
 
@@ -7,7 +7,8 @@ const SignUpModal = ({ show, handleClose }) => {
         alertText,
         alertType,
         displayAlert,
-        signUpUser } = useContext(AuthContext);
+        signUpUser,
+        action } = useContext(AuthContext);
 
     const [values, setValues] = useState({
         email: '',
@@ -16,6 +17,16 @@ const SignUpModal = ({ show, handleClose }) => {
         name: '',
         phoneNumber: '',
     })
+
+    useEffect(() => {
+        setValues({
+            email: '',
+            password: '',
+            checkPassword: '',
+            name: '',
+            phoneNumber: '',
+        })
+    }, [action])
 
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value })
@@ -33,13 +44,6 @@ const SignUpModal = ({ show, handleClose }) => {
         }
         const currentUser = { email: values.email.toLowerCase(), password, name, phoneNumber };
         signUpUser(currentUser);
-        setValues({
-            email: '',
-            password: '',
-            checkPassword: '',
-            name: '',
-            phoneNumber: '',
-        })
     }
     return (
         <>

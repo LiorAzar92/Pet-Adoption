@@ -62,7 +62,7 @@ const UserPage = () => {
                                 <Row className='mb-2 mt-4 overflow-auto' style={{ maxHeight: '49vh' }}>
                                     {ownedPets.map((pet, index) =>
                                         <Col key={index} md={4} lg={4} className="mb-4">
-                                            <PetCard pet={pet} button={false} />
+                                            <PetCard pet={pet} button={true} />
                                         </Col>
                                     )}
                                 </Row>

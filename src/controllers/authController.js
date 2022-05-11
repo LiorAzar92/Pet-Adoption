@@ -17,7 +17,12 @@ const login = async (req, res) => {
     const token = user.createJWT();
     user.password = undefined;
     res
-        .cookie("token", token, { httpOnly: true })
+        .cookie("token", token,
+            {
+                httpOnly: true,
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                secure: process.env.NODE_ENV === 'production' ? true : false
+            })
         .status(StatusCodes.OK)
         .json({ user });
 }
@@ -45,7 +50,12 @@ const updateUser = async (req, res) => {
     const token = user.createJWT();
     user.password = undefined;
     res
-        .cookie("token", token, { httpOnly: true })
+        .cookie("token", token,
+            {
+                httpOnly: true,
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                secure: process.env.NODE_ENV === 'production' ? true : false
+            })
         .status(StatusCodes.OK)
         .json({ user });
 }

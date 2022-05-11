@@ -2,13 +2,14 @@ import { useState, useContext, useEffect } from "react"
 import { Form, Button, Container, Row, Col, Spinner, Collapse } from "react-bootstrap"
 import AuthContext from "../contexts/AuthContext";
 import PetsResults from "../components/PetsResults";
+import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 
 
 const Search = () => {
     const { getPets, setPetsResults, setPage, setQuery } = useContext(AuthContext);
 
+    const [toggle, setToggle] = useState(true);
     const [open, setOpen] = useState(true);
-    const [isBasicSearch, setIsBasicSearch] = useState(true);
     const [searchInputs, setSearchInputs] = useState({
         type: '',
         name: '',
@@ -24,22 +25,6 @@ const Search = () => {
         setPetsResults([])
         setPage(1);
     }, [])
-
-    const changeSearch = (event) => {
-        const value = event.target.value;
-        if (value === 'basic') {
-            setIsBasicSearch(true);
-        } else {
-            setIsBasicSearch(false);
-        }
-        setSearchInputs({
-            ...searchInputs,
-            name: '',
-            height: '',
-            weight: '',
-            adoptionStatus: ''
-        })
-    }
 
     const handleChange = (e) => {
         setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
@@ -58,6 +43,9 @@ const Search = () => {
 
     const removeEmpty = (obj) => {
         Object.keys(obj).forEach((k) => (!obj[k] && obj[k] !== undefined) && delete obj[k]);
+        if (obj.name) {
+            obj.name = obj.name[0].toUpperCase() + obj.name.substring(1).toLowerCase()
+        }
         return obj;
     };
 
@@ -80,55 +68,57 @@ const Search = () => {
             <Collapse in={open}>
                 <Form className='mt-3'
                     onSubmit={onSubmit}>
-                    <Form.Select onClick={changeSearch} className='fs-5 p-2 w-50 mb-2'>
-                        <option value='basic'>Basic Search</option>
-                        <option value='advanced'>Advanced Search</option>
-                    </Form.Select>
+                    <div>
+                        <BootstrapSwitchButton checked={toggle} onstyle="dark" offstyle="secondary" width={120} onlabel='Basic' offlabel="Advanced" onChange={() => { setToggle(!toggle) }} />
+                    </div>
                     <>
-                        <Form.Label >Pet Type</Form.Label>
-                        <Form.Select id="select" name="type" onClick={handleChange}>
-                            <option value=''>All</option>
-                            <option value='Dog'>Dog</option>
-                            <option value='Cat'>Cat</option>
-                        </Form.Select>
+                        <Form.Label className="mt-2">Pet Type</Form.Label>
+                        <div className="d-flex d-flex justify-content-center">
+                            <Form.Select className="w-25" id="select" name="type" onClick={handleChange}>
+                                <option value=''>All</option>
+                                <option value='Dog'>Dog</option>
+                                <option value='Cat'>Cat</option>
+                            </Form.Select>
+                        </div>
                     </>
                     {
-                        !isBasicSearch &&
+                        !toggle &&
                         <>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3 mt-3" controlId="formBasicText">
-                                        <Form.Label >Pet Status</Form.Label>
-                                        <Form.Select id="select" name="adoptionStatus" onClick={handleChange}>
-                                            <option value=''>All</option>
-                                            <option value='Available'>Available</option>
-                                            <option value='Fostered'>Fostered</option>
-                                            <option value='Adopted'>Adopted</option>
-                                        </Form.Select>
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3 mt-3" controlId="formBasicText">
-                                        <Form.Label>Pet's Height</Form.Label>
-                                        <Form.Control className="fs-6" type="text" placeholder="Pet's Height" name='height' value={searchInputs.height} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3 mt-3" controlId="formBasicText">
-                                        <Form.Label >Pet's Type</Form.Label>
-                                        <Form.Control className="fs-6" type="text" placeholder="Pet's Weight" name='weight' value={searchInputs.weight} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3 mt-3" controlId="formBasicText">
-                                        <Form.Label >Pet's Name</Form.Label>
-                                        <Form.Control className="fs-6" type="text" placeholder="Pet's Name" name="name" value={searchInputs.name} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-
-                            </Row>
+                            <Col className="d-flex justify-content-center">
+                                <Form.Group className="mb-3 mt-3 w-25" controlId="formBasicText">
+                                    <Form.Label >Pet Status</Form.Label>
+                                    <Form.Select id="select" name="adoptionStatus" onClick={handleChange}>
+                                        <option value=''>All</option>
+                                        <option value='Available'>Available</option>
+                                        <option value='Fostered'>Fostered</option>
+                                        <option value='Adopted'>Adopted</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3 mt-3" controlId="formBasicText">
+                                    <Form.Label>Pet's Height</Form.Label>
+                                    <div className="d-flex justify-content-center">
+                                        <Form.Control className="fs-6 w-25" type="text" placeholder="Pet's Height" name='height' value={searchInputs.height} onChange={handleChange} />
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3 mt-3" controlId="formBasicText">
+                                    <Form.Label >Pet's Weight</Form.Label>
+                                    <div className="d-flex justify-content-center">
+                                        <Form.Control className="fs-6 w-25" type="text" placeholder="Pet's Weight" name='weight' value={searchInputs.weight} onChange={handleChange} />
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3 mt-3" controlId="formBasicText">
+                                    <Form.Label >Pet's Name</Form.Label>
+                                    <div className="d-flex justify-content-center">
+                                        <Form.Control className="fs-6 w-25" type="text" placeholder="Pet's Name" name="name" value={searchInputs.name} onChange={handleChange} />
+                                    </div>
+                                </Form.Group>
+                            </Col>
                         </>
                     }
                     <Button variant="dark" type="submit" className='mb-2 mt-3 fs-5 me-3' >

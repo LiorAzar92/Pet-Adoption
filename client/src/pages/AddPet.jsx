@@ -80,7 +80,7 @@ const AddPet = ({ editOrAdd }) => {
         } else {
             updatePet(pet._id, setAllPets, currentPet, file);
         }
-        // fileImgRef.current.value = null;
+        fileImgRef.current.value = null;
     }
 
     return (

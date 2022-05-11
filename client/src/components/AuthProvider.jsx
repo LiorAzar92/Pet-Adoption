@@ -5,6 +5,7 @@ import localforage from "localforage";
 
 const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false);
+    const [action, setAction] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertText, setAlertText] = useState('');
@@ -25,7 +26,11 @@ const AuthProvider = ({ children }) => {
     const [query, setQuery] = useState({});
 
     const authFetch = axios.create({
-        baseURL: 'http://localhost:8000/api',
+        baseURL:
+            process.env.NODE_ENV !== 'production' ?
+                'http://localhost:8000/api' :
+                'https://pet-adoption-app-server.herokuapp.com/api'
+        ,
         withCredentials: true
     })
 
@@ -66,10 +71,9 @@ const AuthProvider = ({ children }) => {
     const signUpUser = async (recievedUser) => {
         const url = `/auth/register`
         try {
-            const response = await authFetch.post(url, recievedUser);
-            const { user } = response.data;
-            addUserToLocalStorage({ user });
-            displayAlert('User created! redirecting...', 'success')
+            await authFetch.post(url, recievedUser);
+            displayAlert('User created! redirecting...', 'success');
+            setAction(!action);
             setTimeout(() => {
                 setCloseModal(!closeModal);
             }, 2500);
@@ -176,6 +180,7 @@ const AuthProvider = ({ children }) => {
             formData.append('picture', file, file.name);
             await authFetch.post(url, formData);
             displayAlert('Pet created!', 'success');
+            setAction(!action);
         } catch (error) {
             console.log(error.response.data.msg);
             displayAlert(error.response.data.msg, 'danger')
@@ -199,7 +204,7 @@ const AuthProvider = ({ children }) => {
                 formData.append('dietaryRestrictions', recievedPet.dietaryRestrictions);
                 formData.append('breedOfAnimal', recievedPet.breedOfAnimal);
                 formData.append('picture_public_id', recievedPet.picture_public_id);
-                formData.append('picture', file, file.name)
+                formData.append('picture', file, file.name);
             } else {
                 formData = recievedPet;
             }
@@ -207,6 +212,7 @@ const AuthProvider = ({ children }) => {
             const { pets } = data;
             setFunc([...pets])
             displayAlert('Pet updated!', 'success');
+            setAction(!action);
         } catch (error) {
             console.log(error.response);
             displayAlert(error.response.data.msg, 'danger')
@@ -346,6 +352,7 @@ const AuthProvider = ({ children }) => {
         <AuthContext.Provider
             value={{
                 isAuth,
+                action,
                 setIsAuth,
                 showAlert,
                 setShowAlert,
